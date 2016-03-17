@@ -4,9 +4,11 @@ var express = require('express');
 var app = express();
 app.get('/:cep', function(req, res) {
     var cep = req.params.cep;//"13565090";
-    res.header("Content-Type", "application/json; charset=utf-8");
+    res.set({"Content-Type":"application/json; charset=iso-8859-1"});
+    //res.header();
     request.post({url:"http://m.correios.com.br/movel/buscaCepConfirma.do", 
-        form:{cepEntrada:cep, tipoCep:"",cepTemp:"", metodo:"buscarCep"}}, 
+        form:{cepEntrada:cep, tipoCep:"",cepTemp:"", metodo:"buscarCep"}
+       }, 
         function (error, response, body) {
         if (!error && response.statusCode == 200) {
                 var $ = cheerio.load(body);
@@ -33,7 +35,7 @@ app.get('/:cep', function(req, res) {
         
     });    
 });
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8088);
 
 var formatLogradouro = function (resultados){
     return resultados.eq(0).text().trim();
